@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 
 import {IProduct} from '../../common/interfaces/product.interface';
 
@@ -8,18 +8,11 @@ import {IProduct} from '../../common/interfaces/product.interface';
   styleUrls: ['./products-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent {
   @Input() public productsList: IProduct[];
 
   @Output() public readonly deleteProduct: EventEmitter<string> = new EventEmitter();
   @Output() public readonly editProduct: EventEmitter<string> = new EventEmitter();
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
-
 
   public trackByFn(_: number, item: IProduct): string {
     return item.id;
@@ -29,7 +22,7 @@ export class ProductsListComponent implements OnInit {
     this.editProduct.emit(id);
   }
 
-  delete(id: string): void {
+  public delete(id: string): void {
     this.deleteProduct.emit(id);
   }
 

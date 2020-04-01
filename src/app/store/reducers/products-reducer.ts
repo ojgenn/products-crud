@@ -3,6 +3,7 @@ import {ELoadingStatus} from '../../common/enums/loading-status.enum';
 import {ELoadingActions} from '../../common/enums/loading-actions.enum';
 import {EProductsActions} from '../actions/actions.enum';
 import {TProductsActions} from '../actions/products.types';
+import {IProduct} from '../../common/interfaces/product.interface';
 
 export function productsReducer(state: IProductsState = initialState, action: TProductsActions): IProductsState {
   switch (action.type) {
@@ -28,10 +29,12 @@ export function productsReducer(state: IProductsState = initialState, action: TP
         }
       };
     case EProductsActions.AddProduct:
-      return {...state, loading: {
+      return {
+        ...state, loading: {
           action: ELoadingActions.ADD_PRODUCT,
           status: ELoadingStatus.PENDING,
-        }};
+        }
+      };
     case EProductsActions.AddProductSuccess:
       return {
         products: [...state.products, action.payload],
@@ -41,10 +44,34 @@ export function productsReducer(state: IProductsState = initialState, action: TP
         }
       };
     case EProductsActions.AddProductError:
-      return {...state, loading: {
+      return {
+        ...state, loading: {
           action: ELoadingActions.GET_PRODUCTS,
           status: ELoadingStatus.ERROR,
-        }};
+        }
+      };
+    case EProductsActions.DeleteProduct:
+      return {
+        ...state, loading: {
+          action: ELoadingActions.DELETE_PRODUCT,
+          status: ELoadingStatus.PENDING,
+        }
+      };
+    case EProductsActions.DeleteProductSuccess:
+      const modifiedState: IProduct[] = [...state.products].filter((item: IProduct) => item.id !== action.payload);
+      return {
+        products: modifiedState, loading: {
+          action: ELoadingActions.DELETE_PRODUCT,
+          status: ELoadingStatus.SUCCESS,
+        }
+      };
+    case EProductsActions.DeleteProductError:
+      return {
+        ...state, loading: {
+          action: ELoadingActions.DELETE_PRODUCT,
+          status: ELoadingStatus.ERROR,
+        }
+      };
     default:
       return state;
   }

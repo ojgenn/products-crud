@@ -59,6 +59,8 @@ export class AddProductComponent implements OnInit, OnDestroy {
           url: '',
           units: '',
         });
+
+        this.form.updateValueAndValidity();
       }
     });
   }

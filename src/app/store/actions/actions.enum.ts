@@ -5,4 +5,7 @@ export enum EProductsActions {
   AddProduct = '[Products] Add Product',
   AddProductSuccess = '[Products] Add Product Success',
   AddProductError = '[Products] Add Product Error',
+  DeleteProduct = '[Products] Delete Product',
+  DeleteProductSuccess = '[Products] Delete Product Success',
+  DeleteProductError = '[Products] Delete Product Error',
 }

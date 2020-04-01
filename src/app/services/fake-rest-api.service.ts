@@ -30,4 +30,14 @@ export class FakeRestApiService {
     return product;
   }
 
+  public deleteProduct(id: string): string {
+    const productsFromBackend: string = localStorage.getItem('products');
+    const state: IProduct[] = productsFromBackend ? JSON.parse(productsFromBackend) : [];
+
+    const modifiedState: IProduct[] = state.filter((product: IProduct) => product.id !== id);
+    localStorage.setItem('products', JSON.stringify(modifiedState));
+
+    return id;
+  }
+
 }

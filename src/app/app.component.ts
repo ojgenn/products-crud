@@ -5,6 +5,7 @@ import {select, Store} from '@ngrx/store';
 import {IAppState} from './common/interfaces/app-state.interface';
 import {GetProducts} from './store/actions/get-products.actions';
 import {getProducts} from './store/selectors/products.selector';
+import {DeleteProduct} from './store/actions/delete-product.actions';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new GetProducts());
+  }
+
+  public delete(id: string): void {
+    this.store.dispatch(new DeleteProduct(id));
   }
 
 }

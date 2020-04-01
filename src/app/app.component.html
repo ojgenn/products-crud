@@ -1,3 +1,4 @@
 <app-add-product class="row justify-content-center"></app-add-product>
-<app-products-list [productsList]="products$ | async"
-                   class="row justify-content-center"></app-products-list>
+<app-products-list class="row justify-content-center"
+                   [productsList]="products$ | async"
+                   (deleteProduct)="delete($event)"></app-products-list>

@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
 
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {catchError, switchMap} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {catchError, mergeMap, switchMap} from 'rxjs/operators';
+import {combineLatest, forkJoin, of} from 'rxjs';
 
 import {GetProducts, GetProductsError, GetProductsSuccess} from '../actions/get-products.actions';
 import {ProductsService} from '../../services/products.service';
 import {IProduct} from '../../common/interfaces/product.interface';
 import {EProductsActions} from '../actions/actions.enum';
 import {AddProduct, AddProductError, AddProductSuccess} from '../actions/add-product.actions';
+import {DeleteProduct, DeleteProductError, DeleteProductSuccess} from '../actions/delete-product.actions';
 
 @Injectable()
 export class ProductsEffects {
@@ -32,6 +33,14 @@ export class ProductsEffects {
     switchMap((action) => this.productsService.addProduct(action.payload)),
     switchMap((product: IProduct) => of(new AddProductSuccess(product))),
     catchError(() => of(new AddProductError())),
+  );
+
+  @Effect()
+  deleteProduct$ = this.actions.pipe(
+    ofType<DeleteProduct>(EProductsActions.DeleteProduct),
+    switchMap((action) => forkJoin([this.productsService.deleteProduct(action.payload), of(action.payload)])),
+    switchMap(([_, id]: [void, string]) => of(new DeleteProductSuccess(id))),
+    catchError(() => of(new DeleteProductError())),
   );
 }
 
