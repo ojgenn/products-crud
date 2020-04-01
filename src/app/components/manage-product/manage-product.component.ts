@@ -2,24 +2,24 @@ import {ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit,
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {select, Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {EUnits} from '../../../common/enums/units.enum';
-import {ISelect} from '../../../common/interfaces/select.interface';
-import {getUnits} from '../../../common/helpers/get-units';
-import {regex} from '../../../common/helpers/regex';
-import {AddProduct} from '../../../store/actions/add-product.actions';
-import {Product} from '../../../common/models/product.model';
-import {IAppState} from '../../../common/interfaces/app-state.interface';
-import {getLoading} from '../../../store/selectors/products.selector';
-import {ELoadingActions} from '../../../common/enums/loading-actions.enum';
-import {ILoadingStatus} from '../../../common/interfaces/loading-status.interface';
-import {ELoadingStatus} from '../../../common/enums/loading-status.enum';
-import {IProduct} from '../../../common/interfaces/product.interface';
-import {EManageProductMode} from '../../../common/enums/manage-product-mode.enum';
+import {EUnits} from '../../common/enums/units.enum';
+import {ISelect} from '../../common/interfaces/select.interface';
+import {getUnits} from '../../common/helpers/get-units';
+import {regex} from '../../common/helpers/regex';
+import {AddProduct} from '../../store/actions/add-product.actions';
+import {Product} from '../../common/models/product.model';
+import {IAppState} from '../../common/interfaces/app-state.interface';
+import {getLoading} from '../../store/selectors/products.selector';
+import {ELoadingActions} from '../../common/enums/loading-actions.enum';
+import {ILoadingStatus} from '../../common/interfaces/loading-status.interface';
+import {ELoadingStatus} from '../../common/enums/loading-status.enum';
+import {IProduct} from '../../common/interfaces/product.interface';
+import {EManageProductMode} from '../../common/enums/manage-product-mode.enum';
 import {Router} from '@angular/router';
-import {EditProduct} from '../../../store/actions/edit-product.actions';
+import {EditProduct} from '../../store/actions/edit-product.actions';
 
 @Component({
   selector: 'app-manage-product',
@@ -30,12 +30,15 @@ import {EditProduct} from '../../../store/actions/edit-product.actions';
 export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
   @Input() private product: IProduct;
   @Input() public mode: EManageProductMode;
+  @Input() public loading: ILoadingStatus;
 
   private ngOnDestroy$: Subject<void> = new Subject();
 
   public units: ISelect<EUnits>[];
   public form: FormGroup;
   public manageMode: typeof EManageProductMode = EManageProductMode;
+  public loadingAction: typeof ELoadingActions = ELoadingActions;
+  public showSpinner$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private fb: FormBuilder,
@@ -62,6 +65,14 @@ export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if ('mode' in changes && !this.product) {
       this.router.navigateByUrl('/list');
+    }
+
+    if ('loading' in changes && this.loading && [ELoadingActions.EDIT_PRODUCT, ELoadingActions.ADD_PRODUCT].includes(this.loading.action)) {
+      if (this.loading.status === ELoadingStatus.PENDING) {
+        this.showSpinner$.next(true);
+      } else {
+        this.showSpinner$.next(false);
+      }
     }
   }
 
@@ -110,11 +121,11 @@ export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
     product.img = form.get('url').value;
     product.units = form.get('units').value;
 
-    if (this.mode === EManageProductMode.ADD) {
-      this.addProduct(product);
-    } else {
+    if (this.mode === EManageProductMode.EDIT) {
       product.id = this.product.id;
       this.editProduct(product);
+    } else {
+      this.addProduct(product);
     }
   }
 

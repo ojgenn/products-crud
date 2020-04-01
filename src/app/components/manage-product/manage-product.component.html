@@ -28,7 +28,11 @@
               (click)="submit(form)"
               [disabled]="form.invalid"
               class="btn btn-primary">
-        {{mode === manageMode.EDIT ? 'Edit' : 'Add'}}
+        <span *ngIf="showSpinner$ | async"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"></span>
+        {{mode === manageMode?.EDIT ? 'Edit' : 'Add'}}
       </button>
 
     </form>

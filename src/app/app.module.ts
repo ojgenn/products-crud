@@ -12,7 +12,7 @@ import { environment } from '../environments/environment';
 import {AppInterceptor} from './services/app.interceptor';
 import { EffectsModule } from '@ngrx/effects';
 import {ProductsEffects} from './store/effects/products.effects';
-import { ManageProductComponent } from './components/products/manage-product/manage-product.component';
+import { ManageProductComponent } from './components/manage-product/manage-product.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { ProductsListComponent } from './components/products/products-list/products-list.component';
 import { UnitsPipe } from './pipes/units.pipe';
