@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {select, Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 
 import {EUnits} from '../../../common/enums/units.enum';
 import {ISelect} from '../../../common/interfaces/select.interface';
@@ -19,6 +19,7 @@ import {ELoadingStatus} from '../../../common/enums/loading-status.enum';
 import {IProduct} from '../../../common/interfaces/product.interface';
 import {EManageProductMode} from '../../../common/enums/manage-product-mode.enum';
 import {Router} from '@angular/router';
+import {EditProduct} from '../../../store/actions/edit-product.actions';
 
 @Component({
   selector: 'app-manage-product',
@@ -66,17 +67,23 @@ export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
 
   private watchLoadingStatus(): void {
     this.store.pipe(select(getLoading)).pipe(
-      filter((loading) => loading.action === ELoadingActions.ADD_PRODUCT),
       takeUntil(this.ngOnDestroy$),
     ).subscribe((loading: ILoadingStatus) => {
       if (loading.status === ELoadingStatus.SUCCESS) {
-        this.form.patchValue({
-          name: '',
-          url: '',
-          units: '',
-        });
+        switch (loading.action) {
+          case ELoadingActions.ADD_PRODUCT:
+            this.form.patchValue({
+              name: '',
+              url: '',
+              units: '',
+            });
 
-        this.form.updateValueAndValidity();
+            this.form.updateValueAndValidity();
+            break;
+          case ELoadingActions.EDIT_PRODUCT:
+            this.router.navigateByUrl('/list');
+            break;
+        }
       }
     });
   }
@@ -112,7 +119,7 @@ export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private editProduct(product: IProduct): void {
-    console.log(product);
+    this.store.dispatch(new EditProduct(product));
   }
 
   private addProduct(product: IProduct): void {

@@ -10,6 +10,7 @@ import {IProduct} from '../../common/interfaces/product.interface';
 import {EProductsActions} from '../actions/actions.enum';
 import {AddProduct, AddProductError, AddProductSuccess} from '../actions/add-product.actions';
 import {DeleteProduct, DeleteProductError, DeleteProductSuccess} from '../actions/delete-product.actions';
+import {EditProduct, EditProductError, EditProductSuccess} from '../actions/edit-product.actions';
 
 @Injectable()
 export class ProductsEffects {
@@ -41,6 +42,14 @@ export class ProductsEffects {
     switchMap((action) => forkJoin([this.productsService.deleteProduct(action.payload), of(action.payload)])),
     switchMap(([_, id]: [void, string]) => of(new DeleteProductSuccess(id))),
     catchError(() => of(new DeleteProductError())),
+  );
+
+  @Effect()
+  editProduct$ = this.actions.pipe(
+    ofType<EditProduct>(EProductsActions.EditProduct),
+    switchMap((action) => this.productsService.editProduct(action.payload)),
+    switchMap((product: IProduct) => of(new EditProductSuccess(product))),
+    catchError(() => of(new EditProductError())),
   );
 }
 

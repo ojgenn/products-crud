@@ -1,6 +1,7 @@
 import {GetProducts, GetProductsError, GetProductsSuccess} from './get-products.actions';
 import {AddProduct, AddProductError, AddProductSuccess} from './add-product.actions';
 import {DeleteProduct, DeleteProductError, DeleteProductSuccess} from './delete-product.actions';
+import {EditProduct, EditProductError, EditProductSuccess} from './edit-product.actions';
 
 export type TProductsActions =
   | GetProducts
@@ -11,4 +12,7 @@ export type TProductsActions =
   | AddProductError
   | DeleteProduct
   | DeleteProductSuccess
-  | DeleteProductError;
+  | DeleteProductError
+  | EditProduct
+  | EditProductError
+  | EditProductSuccess;

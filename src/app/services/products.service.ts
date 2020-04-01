@@ -25,4 +25,8 @@ export class ProductsService {
   public deleteProduct(id: string): Observable<void> {
     return this.http.delete<void>(`${environment.serverUrl}/product/${id}`);
   }
+
+  public editProduct(product: IProduct): Observable<IProduct> {
+    return this.http.put<IProduct>(`${environment.serverUrl}/product`, product);
+  }
 }

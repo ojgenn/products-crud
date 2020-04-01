@@ -36,6 +36,12 @@ export class AppInterceptor implements HttpInterceptor {
         delay(300),
       );
     }
+
+    if (req.method === 'PUT' && req.url === `${environment.serverUrl}/product`) {
+      return of(new HttpResponse({status: 200, body: this.fakeRestApiService.editProduct(req.body)})).pipe(
+        delay(300),
+      );
+    }
     next.handle(req);
   }
 }

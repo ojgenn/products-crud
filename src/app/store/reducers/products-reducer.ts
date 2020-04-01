@@ -72,6 +72,33 @@ export function productsReducer(state: IProductsState = initialState, action: TP
           status: ELoadingStatus.ERROR,
         }
       };
+    case EProductsActions.EditProduct:
+      return {
+        ...state, loading: {
+          action: ELoadingActions.EDIT_PRODUCT,
+          status: ELoadingStatus.PENDING,
+        }
+      };
+    case EProductsActions.EditProductSuccess:
+      const stateToEdit: IProduct[] = [...state.products];
+      const productIndex: number = stateToEdit.findIndex((item: IProduct) => item.id === action.payload.id);
+      if (productIndex >= 0) {
+        stateToEdit[productIndex] = action.payload;
+      }
+
+      return {
+        products: stateToEdit, loading: {
+          action: ELoadingActions.EDIT_PRODUCT,
+          status: ELoadingStatus.SUCCESS,
+        }
+      };
+    case EProductsActions.EditProductError:
+      return {
+        ...state, loading: {
+          action: ELoadingActions.EDIT_PRODUCT,
+          status: ELoadingStatus.ERROR,
+        }
+      };
     default:
       return state;
   }

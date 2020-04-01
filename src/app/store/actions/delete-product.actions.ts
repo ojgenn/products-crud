@@ -1,6 +1,5 @@
 import {Action} from '@ngrx/store';
 import {EProductsActions} from './actions.enum';
-import {IProduct} from '../../common/interfaces/product.interface';
 
 export class DeleteProduct implements Action {
   public readonly type = EProductsActions.DeleteProduct;

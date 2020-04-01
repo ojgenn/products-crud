@@ -40,4 +40,17 @@ export class FakeRestApiService {
     return id;
   }
 
+  public editProduct(product: IProduct): IProduct {
+    const productsFromBackend: string = localStorage.getItem('products');
+    const state: IProduct[] = productsFromBackend ? JSON.parse(productsFromBackend) : [];
+
+    const productIndex: number = state.findIndex((item: IProduct) => item.id === product.id);
+    if (productIndex >= 0) {
+      state[productIndex] = product;
+    }
+    localStorage.setItem('products', JSON.stringify(state));
+
+    return product;
+  }
+
 }
