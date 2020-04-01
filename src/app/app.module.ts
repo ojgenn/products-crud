@@ -9,10 +9,11 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {reducers} from './store/reducers';
 import { environment } from '../environments/environment';
-import {AppInterceptor} from './services/app-interceptor.service';
+import {AppInterceptor} from './services/app.interceptor';
 import { EffectsModule } from '@ngrx/effects';
 import {ProductsEffects} from './store/effects/products.effects';
 import { AddProductComponent } from './components/add-product/add-product.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AddProductComponent } from './components/add-product/add-product.compon
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([ProductsEffects]),
+    ReactiveFormsModule,
   ],
   providers: [
     {

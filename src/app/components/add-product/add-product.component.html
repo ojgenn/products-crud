@@ -1,7 +1,36 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Add product</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <form [formGroup]="form">
+      <h5 class="card-title">Add product</h5>
+
+      <input type="text"
+             class="form-control"
+             placeholder="Product name"
+             aria-label="ProductName"
+             formControlName="name">
+
+      <input type="text"
+             class="form-control"
+             placeholder="Image path"
+             aria-label="ImgPath"
+             formControlName="url">
+
+      <select class="form-control mb-3"
+              formControlName="units">
+        <option value="">Choose unit</option>
+        <option *ngFor="let unit of units"
+                [ngValue]="unit.key">
+          {{unit.value}}
+        </option>
+      </select>
+
+      <button type="button"
+              (click)="submit(form)"
+              [disabled]="form.invalid"
+              class="btn btn-primary">
+        Add
+      </button>
+
+    </form>
   </div>
 </div>

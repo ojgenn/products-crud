@@ -9,3 +9,8 @@ export const getProducts = createSelector(
   productsState,
   (state: IProductsState) => state.products,
 );
+
+export const getLoading = createSelector(
+  productsState,
+  (state: IProductsState) => state.loading,
+);

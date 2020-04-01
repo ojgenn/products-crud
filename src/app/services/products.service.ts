@@ -17,4 +17,8 @@ export class ProductsService {
   public getProducts(): Observable<IProduct[]> {
     return this.http.get<IProduct[]>(`${environment.serverUrl}/products`);
   }
+
+  public addProduct(product: IProduct): Observable<IProduct> {
+    return this.http.post<IProduct>(`${environment.serverUrl}/product`, product);
+  }
 }

@@ -3,7 +3,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 
 import {IAppState} from './common/interfaces/app-state.interface';
-import {GetProducts} from './store/actions/products.actions';
+import {GetProducts} from './store/actions/get-products.actions';
 import {getProducts} from './store/selectors/products.selector';
 
 @Component({
