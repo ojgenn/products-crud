@@ -1,0 +1,18 @@
+<div class="card" *ngFor="let product of productsList; trackBy: trackByFn">
+  <img [src]="product.img" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text">{{product.name}}, {{product.units | units}}</p>
+    <div class="d-flex">
+      <button type="button"
+              (click)="edit(product.id)"
+              class="btn btn-primary mr-3">
+        Edit
+      </button>
+      <button type="button"
+              (click)="delete(product.id)"
+              class="btn btn-danger">
+        Delete
+      </button>
+    </div>
+  </div>
+</div>

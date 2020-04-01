@@ -14,11 +14,16 @@ import { EffectsModule } from '@ngrx/effects';
 import {ProductsEffects} from './store/effects/products.effects';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { ProductsListComponent } from './components/products-list/products-list.component';
+import { UnitsPipe } from './pipes/units.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddProductComponent,
+    ProductsListComponent,
+    UnitsPipe,
+    UnitsPipe,
   ],
   imports: [
     BrowserModule,
