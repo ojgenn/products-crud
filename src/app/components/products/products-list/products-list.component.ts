@@ -12,14 +12,14 @@ export class ProductsListComponent {
   @Input() public productsList: IProduct[];
 
   @Output() public readonly deleteProduct: EventEmitter<string> = new EventEmitter();
-  @Output() public readonly editProduct: EventEmitter<string> = new EventEmitter();
+  @Output() public readonly editProduct: EventEmitter<IProduct> = new EventEmitter();
 
   public trackByFn(_: number, item: IProduct): string {
     return item.id;
   }
 
-  public edit(id: string): void {
-    this.editProduct.emit(id);
+  public edit(product: IProduct): void {
+    this.editProduct.emit(product);
   }
 
   public delete(id: string): void {

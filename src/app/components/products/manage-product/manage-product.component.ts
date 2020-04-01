@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {select, Store} from '@ngrx/store';
@@ -16,6 +16,9 @@ import {getLoading} from '../../../store/selectors/products.selector';
 import {ELoadingActions} from '../../../common/enums/loading-actions.enum';
 import {ILoadingStatus} from '../../../common/interfaces/loading-status.interface';
 import {ELoadingStatus} from '../../../common/enums/loading-status.enum';
+import {IProduct} from '../../../common/interfaces/product.interface';
+import {EManageProductMode} from '../../../common/enums/manage-product-mode.enum';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-manage-product',
@@ -23,24 +26,30 @@ import {ELoadingStatus} from '../../../common/enums/loading-status.enum';
   styleUrls: ['./manage-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageProductComponent implements OnInit, OnDestroy {
+export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() private product: IProduct;
+  @Input() public mode: EManageProductMode;
+
   private ngOnDestroy$: Subject<void> = new Subject();
 
   public units: ISelect<EUnits>[];
   public form: FormGroup;
-  public loading$ = this.store.pipe(select(getLoading)).pipe(
-    filter((loading) => loading.action === ELoadingActions.ADD_PRODUCT),
-  );
+  public manageMode: typeof EManageProductMode = EManageProductMode;
 
   constructor(
     private fb: FormBuilder,
     private store: Store<IAppState>,
+    private router: Router,
   ) {
   }
 
   ngOnInit(): void {
     this.units = getUnits();
     this.form = this.initForm();
+
+    if (this.mode === EManageProductMode.EDIT && this.product) {
+      this.updateForm();
+    }
 
     this.watchLoadingStatus();
   }
@@ -49,8 +58,15 @@ export class ManageProductComponent implements OnInit, OnDestroy {
     this.ngOnDestroy$.next();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('mode' in changes && !this.product) {
+      this.router.navigateByUrl('/list');
+    }
+  }
+
   private watchLoadingStatus(): void {
-    this.loading$.pipe(
+    this.store.pipe(select(getLoading)).pipe(
+      filter((loading) => loading.action === ELoadingActions.ADD_PRODUCT),
       takeUntil(this.ngOnDestroy$),
     ).subscribe((loading: ILoadingStatus) => {
       if (loading.status === ELoadingStatus.SUCCESS) {
@@ -73,13 +89,39 @@ export class ManageProductComponent implements OnInit, OnDestroy {
     });
   }
 
+  private updateForm(): void {
+    this.form.patchValue({
+      name: this.product.name,
+      url: this.product.img,
+      units: this.product.units,
+    });
+  }
+
+  private manageProduct(form: FormGroup): void {
+    const product = new Product();
+    product.name = form.get('name').value;
+    product.img = form.get('url').value;
+    product.units = form.get('units').value;
+
+    if (this.mode === EManageProductMode.ADD) {
+      this.addProduct(product);
+    } else {
+      product.id = this.product.id;
+      this.editProduct(product);
+    }
+  }
+
+  private editProduct(product: IProduct): void {
+    console.log(product);
+  }
+
+  private addProduct(product: IProduct): void {
+    this.store.dispatch(new AddProduct(product));
+  }
+
   public submit(form: FormGroup) {
     if (form.valid) {
-      const product = new Product();
-      product.name = form.get('name').value;
-      product.img = form.get('url').value;
-      product.units = form.get('units').value;
-      this.store.dispatch(new AddProduct(product));
+      this.manageProduct(form);
     }
   }
 }

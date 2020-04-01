@@ -1,9 +1,13 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+
 import {select, Store} from '@ngrx/store';
+
 import {getProducts} from '../../store/selectors/products.selector';
 import {IAppState} from '../../common/interfaces/app-state.interface';
 import {GetProducts} from '../../store/actions/get-products.actions';
 import {DeleteProduct} from '../../store/actions/delete-product.actions';
+import {IProduct} from '../../common/interfaces/product.interface';
 
 @Component({
   selector: 'app-products',
@@ -14,7 +18,10 @@ import {DeleteProduct} from '../../store/actions/delete-product.actions';
 export class ProductsComponent implements OnInit {
   public products$ = this.store.pipe(select(getProducts));
 
-  constructor(private store: Store<IAppState>) {
+  constructor(
+    private store: Store<IAppState>,
+    private router: Router,
+  ) {
   }
 
   ngOnInit(): void {
@@ -25,7 +32,7 @@ export class ProductsComponent implements OnInit {
     this.store.dispatch(new DeleteProduct(id));
   }
 
-  public edit(id: string): void {
-    //
+  public edit(product: IProduct): void {
+    this.router.navigateByUrl('/edit', {state: {product}});
   }
 }
