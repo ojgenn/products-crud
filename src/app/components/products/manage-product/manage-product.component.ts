@@ -2,28 +2,28 @@ import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/co
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {select, Store} from '@ngrx/store';
-
-import {EUnits} from '../../common/enums/units.enum';
-import {ISelect} from '../../common/interfaces/select.interface';
-import {getUnits} from '../../common/helpers/get-units';
-import {regex} from '../../common/helpers/regex';
-import {AddProduct} from '../../store/actions/add-product.actions';
-import {Product} from '../../common/models/product.model';
-import {IAppState} from '../../common/interfaces/app-state.interface';
-import {getLoading} from '../../store/selectors/products.selector';
-import {filter, takeUntil} from 'rxjs/operators';
-import {ELoadingActions} from '../../common/enums/loading-actions.enum';
 import {Subject} from 'rxjs';
-import {ILoadingStatus} from '../../common/interfaces/loading-status.interface';
-import {ELoadingStatus} from '../../common/enums/loading-status.enum';
+import {filter, takeUntil} from 'rxjs/operators';
+
+import {EUnits} from '../../../common/enums/units.enum';
+import {ISelect} from '../../../common/interfaces/select.interface';
+import {getUnits} from '../../../common/helpers/get-units';
+import {regex} from '../../../common/helpers/regex';
+import {AddProduct} from '../../../store/actions/add-product.actions';
+import {Product} from '../../../common/models/product.model';
+import {IAppState} from '../../../common/interfaces/app-state.interface';
+import {getLoading} from '../../../store/selectors/products.selector';
+import {ELoadingActions} from '../../../common/enums/loading-actions.enum';
+import {ILoadingStatus} from '../../../common/interfaces/loading-status.interface';
+import {ELoadingStatus} from '../../../common/enums/loading-status.enum';
 
 @Component({
-  selector: 'app-add-product',
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.scss'],
+  selector: 'app-manage-product',
+  templateUrl: './manage-product.component.html',
+  styleUrls: ['./manage-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddProductComponent implements OnInit, OnDestroy {
+export class ManageProductComponent implements OnInit, OnDestroy {
   private ngOnDestroy$: Subject<void> = new Subject();
 
   public units: ISelect<EUnits>[];

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 
-import {IProduct} from '../../common/interfaces/product.interface';
+import {IProduct} from '../../../common/interfaces/product.interface';
 
 @Component({
   selector: 'app-products-list',

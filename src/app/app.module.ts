@@ -12,18 +12,22 @@ import { environment } from '../environments/environment';
 import {AppInterceptor} from './services/app.interceptor';
 import { EffectsModule } from '@ngrx/effects';
 import {ProductsEffects} from './store/effects/products.effects';
-import { AddProductComponent } from './components/add-product/add-product.component';
+import { ManageProductComponent } from './components/products/manage-product/manage-product.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import { ProductsListComponent } from './components/products-list/products-list.component';
+import { ProductsListComponent } from './components/products/products-list/products-list.component';
 import { UnitsPipe } from './pipes/units.pipe';
+import { EditComponent } from './components/edit/edit.component';
+import { ProductsComponent } from './components/products/products.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AddProductComponent,
+    ManageProductComponent,
     ProductsListComponent,
     UnitsPipe,
     UnitsPipe,
+    EditComponent,
+    ProductsComponent,
   ],
   imports: [
     BrowserModule,
