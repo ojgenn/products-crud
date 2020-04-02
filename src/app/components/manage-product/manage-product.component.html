@@ -8,12 +8,28 @@
              placeholder="Product name"
              aria-label="ProductName"
              formControlName="name">
+      <div class="alert alert-danger" *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)">
+        <div *ngIf="form.controls['name'].errors.required">
+          Product name is required.
+        </div>
+        <div *ngIf="form.controls['name'].errors.pattern">
+          Product name should contain only symbols and numbers and space
+        </div>
+      </div>
 
       <input type="text"
              class="form-control"
              placeholder="Image path"
              aria-label="ImgPath"
              formControlName="url">
+      <div class="alert alert-danger" *ngIf="form.controls['url'].invalid && (form.controls['url'].dirty || form.controls['url'].touched)">
+        <div *ngIf="form.controls['url'].errors.required">
+          Product name is required.
+        </div>
+        <div *ngIf="form.controls['url'].errors.pattern">
+          Wrong image path
+        </div>
+      </div>
 
       <select class="form-control mb-3"
               formControlName="units">
@@ -23,6 +39,11 @@
           {{unit.value}}
         </option>
       </select>
+      <div class="alert alert-danger" *ngIf="form.controls['units'].invalid && (form.controls['units'].dirty || form.controls['units'].touched)">
+        <div *ngIf="form.controls['units'].errors.required">
+          Product name is required.
+        </div>
+      </div>
 
       <button type="button"
               (click)="submit(form)"

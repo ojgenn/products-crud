@@ -4,6 +4,7 @@ import {ILoadingStatus} from '../../common/interfaces/loading-status.interface';
 export interface IProductsState {
   products: IProduct[];
   loading: ILoadingStatus;
+  workWithProductId?: string;
 }
 
 export const initialState: IProductsState = {
@@ -12,4 +13,5 @@ export const initialState: IProductsState = {
     status: null,
     action: null,
   },
+  workWithProductId: null,
 };

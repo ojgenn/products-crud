@@ -14,3 +14,8 @@ export const getLoading = createSelector(
   productsState,
   (state: IProductsState) => state.loading,
 );
+
+export const getWorkWithProductId = createSelector(
+  productsState,
+  (state: IProductsState) => state.workWithProductId,
+);

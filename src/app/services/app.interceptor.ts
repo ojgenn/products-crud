@@ -42,6 +42,7 @@ export class AppInterceptor implements HttpInterceptor {
         delay(300),
       );
     }
+
     next.handle(req);
   }
 }

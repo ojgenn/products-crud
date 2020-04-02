@@ -1,4 +1,5 @@
 import {Action} from '@ngrx/store';
+
 import {EProductsActions} from './actions.enum';
 
 export class DeleteProduct implements Action {

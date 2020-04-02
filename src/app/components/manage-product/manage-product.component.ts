@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 import {select, Store} from '@ngrx/store';
 import {BehaviorSubject, Subject} from 'rxjs';
@@ -18,7 +19,6 @@ import {ILoadingStatus} from '../../common/interfaces/loading-status.interface';
 import {ELoadingStatus} from '../../common/enums/loading-status.enum';
 import {IProduct} from '../../common/interfaces/product.interface';
 import {EManageProductMode} from '../../common/enums/manage-product-mode.enum';
-import {Router} from '@angular/router';
 import {EditProduct} from '../../store/actions/edit-product.actions';
 
 @Component({
@@ -30,7 +30,6 @@ import {EditProduct} from '../../store/actions/edit-product.actions';
 export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
   @Input() private product: IProduct;
   @Input() public mode: EManageProductMode;
-  @Input() public loading: ILoadingStatus;
 
   private ngOnDestroy$: Subject<void> = new Subject();
 
@@ -66,20 +65,17 @@ export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
     if ('mode' in changes && !this.product) {
       this.router.navigateByUrl('/list');
     }
-
-    if ('loading' in changes && this.loading && [ELoadingActions.EDIT_PRODUCT, ELoadingActions.ADD_PRODUCT].includes(this.loading.action)) {
-      if (this.loading.status === ELoadingStatus.PENDING) {
-        this.showSpinner$.next(true);
-      } else {
-        this.showSpinner$.next(false);
-      }
-    }
   }
 
   private watchLoadingStatus(): void {
     this.store.pipe(select(getLoading)).pipe(
       takeUntil(this.ngOnDestroy$),
     ).subscribe((loading: ILoadingStatus) => {
+      this.showSpinner$.next(
+        [ELoadingActions.ADD_PRODUCT, ELoadingActions.EDIT_PRODUCT].includes(loading?.action) &&
+        loading?.status === ELoadingStatus.PENDING
+      );
+
       if (loading.status === ELoadingStatus.SUCCESS) {
         switch (loading.action) {
           case ELoadingActions.ADD_PRODUCT:
@@ -89,6 +85,8 @@ export class ManageProductComponent implements OnInit, OnDestroy, OnChanges {
               units: '',
             });
 
+            this.form.markAsPristine();
+            this.form.markAsUntouched();
             this.form.updateValueAndValidity();
             break;
           case ELoadingActions.EDIT_PRODUCT:

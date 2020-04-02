@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {catchError, mergeMap, switchMap} from 'rxjs/operators';
-import {combineLatest, forkJoin, of} from 'rxjs';
+import {catchError, switchMap} from 'rxjs/operators';
+import {forkJoin, of} from 'rxjs';
 
 import {GetProducts, GetProductsError, GetProductsSuccess} from '../actions/get-products.actions';
 import {ProductsService} from '../../services/products.service';

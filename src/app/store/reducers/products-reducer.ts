@@ -46,7 +46,7 @@ export function productsReducer(state: IProductsState = initialState, action: TP
     case EProductsActions.AddProductError:
       return {
         ...state, loading: {
-          action: ELoadingActions.GET_PRODUCTS,
+          action: ELoadingActions.ADD_PRODUCT,
           status: ELoadingStatus.ERROR,
         }
       };
@@ -55,7 +55,8 @@ export function productsReducer(state: IProductsState = initialState, action: TP
         ...state, loading: {
           action: ELoadingActions.DELETE_PRODUCT,
           status: ELoadingStatus.PENDING,
-        }
+        },
+        workWithProductId: action.payload,
       };
     case EProductsActions.DeleteProductSuccess:
       const modifiedState: IProduct[] = [...state.products].filter((item: IProduct) => item.id !== action.payload);
@@ -63,7 +64,8 @@ export function productsReducer(state: IProductsState = initialState, action: TP
         products: modifiedState, loading: {
           action: ELoadingActions.DELETE_PRODUCT,
           status: ELoadingStatus.SUCCESS,
-        }
+        },
+        workWithProductId: null,
       };
     case EProductsActions.DeleteProductError:
       return {

@@ -1,4 +1,5 @@
 import {Action} from '@ngrx/store';
+
 import {IProduct} from '../../common/interfaces/product.interface';
 import {EProductsActions} from './actions.enum';
 

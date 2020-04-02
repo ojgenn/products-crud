@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
-import {getLoading, getProducts} from '../../store/selectors/products.selector';
+import {getLoading, getProducts, getWorkWithProductId} from '../../store/selectors/products.selector';
 import {IAppState} from '../../common/interfaces/app-state.interface';
 import {GetProducts} from '../../store/actions/get-products.actions';
 import {DeleteProduct} from '../../store/actions/delete-product.actions';
@@ -20,6 +20,7 @@ import {ILoadingStatus} from '../../common/interfaces/loading-status.interface';
 export class ProductsComponent implements OnInit {
   public products$: Observable<IProduct[]> = this.store.pipe(select(getProducts));
   public loading$: Observable<ILoadingStatus> = this.store.pipe(select(getLoading));
+  public workWithProductId$: Observable<string> = this.store.pipe(select(getWorkWithProductId));
 
   constructor(
     private store: Store<IAppState>,

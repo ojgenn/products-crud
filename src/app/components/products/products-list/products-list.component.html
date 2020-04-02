@@ -11,6 +11,10 @@
       <button type="button"
               (click)="delete(product.id)"
               class="btn btn-danger">
+        <span *ngIf="(showSpinner$ | async) && product.id === workWithProductId"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"></span>
         Delete
       </button>
     </div>
